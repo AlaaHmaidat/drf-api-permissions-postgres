@@ -1,0 +1,18 @@
+version: "3.10-slim"  # Docker Compose file version
+
+services:
+  web:
+    build: .  # Build the Docker image using the Dockerfile in the current directory
+    command: python manage.py runserver 0.0.0.0:8000  # Run the Django development server
+    volumes:
+      - .:/code  # Mount the current directory as a volume inside the container at /code
+    ports:
+      - "8000:8000"  # Expose port 8000 on the host machine and map it to port 8000 inside the container
+    depends_on:
+      - db  # Specify that the web service depends on the db service
+  db:
+    image: postgres  # Use the official Postgres Docker image
+    environment:
+      - POSTGRES_DB=postgres  # Set the name of the default database
+      - POSTGRES_USER=postgres  # Set the username for the default user
+      - POSTGRES_PASSWORD=postgres  # Set the password for the default user
